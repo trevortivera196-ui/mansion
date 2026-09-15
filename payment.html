@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payments - Finnest Movers</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <i class="fas fa-truck-moving"></i>
+        <span>Finnest <strong>Movers</strong></span>
+      </a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="index.html#services" class="nav-link">Services</a></li>
+        <li><a href="index.html#about" class="nav-link">About</a></li>
+        <li><a href="house-management.html" class="nav-link">House Management</a></li>
+        <li><a href="payroll.html" class="nav-link">Payroll</a></li>
+        <li><a href="payment.html" class="nav-link active">Payments</a></li>
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+        <li><a href="login.html" class="nav-link btn-quote"><i class="fas fa-lock"></i> Login</a></li>
+      </ul>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header">
+    <span class="section-tag">Finance</span>
+    <h1><i class="fas fa-credit-card"></i> Payment Portal</h1>
+    <p>Process moving payments, rent, and service fees securely in one place.</p>
+  </div>
+
+  <!-- ===== PAYMENT TABS ===== -->
+  <div class="hm-tabs-bar">
+    <div class="container">
+      <div class="hm-tabs">
+        <button class="hm-tab active" data-tab="make-payment">
+          <i class="fas fa-plus-circle"></i> Make Payment
+        </button>
+        <button class="hm-tab" data-tab="transactions">
+          <i class="fas fa-list"></i> Transactions
+        </button>
+        <button class="hm-tab" data-tab="invoices">
+          <i class="fas fa-file-invoice"></i> Invoices
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <section class="management-section" style="padding-top:40px;">
+    <div class="container">
+
+      <!-- Summary Cards -->
+      <div class="summary-cards">
+        <div class="summary-card green">
+          <div class="summary-icon"><i class="fas fa-check-circle"></i></div>
+          <div class="summary-info">
+            <h4 id="pmtTotalPaid">$0</h4>
+            <p>Total Collected</p>
+          </div>
+        </div>
+        <div class="summary-card blue">
+          <div class="summary-icon"><i class="fas fa-receipt"></i></div>
+          <div class="summary-info">
+            <h4 id="pmtCount">0</h4>
+            <p>Transactions</p>
+          </div>
+        </div>
+        <div class="summary-card orange">
+          <div class="summary-icon"><i class="fas fa-hourglass-half"></i></div>
+          <div class="summary-info">
+            <h4 id="pmtPending">$0</h4>
+            <p>Pending</p>
+          </div>
+        </div>
+        <div class="summary-card red">
+          <div class="summary-icon"><i class="fas fa-times-circle"></i></div>
+          <div class="summary-info">
+            <h4 id="pmtFailed">$0</h4>
+            <p>Failed / Refunded</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== MAKE PAYMENT TAB ===== -->
+      <div class="tab-content active" id="tab-make-payment">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;" class="pay-grid">
+
+          <!-- Payment Form -->
+          <div class="panel">
+            <div class="panel-header">
+              <h3><i class="fas fa-credit-card"></i> New Payment</h3>
+            </div>
+            <form id="paymentPortalForm">
+              <div class="form-row" style="grid-template-columns:1fr;">
+                <div class="form-group">
+                  <label>Payment Type</label>
+                  <select id="pmtType" required onchange="updatePaymentFields()">
+                    <option value="">Select payment type</option>
+                    <option value="moving">Moving Service</option>
+                    <option value="rent">Rent Payment</option>
+                    <option value="deposit">Security Deposit</option>
+                    <option value="storage">Storage Fee</option>
+                    <option value="maintenance">Maintenance Fee</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Payer Full Name</label>
+                  <input type="text" id="pmtPayerName" placeholder="John Doe" required />
+                </div>
+                <div class="form-group">
+                  <label>Payer Email</label>
+                  <input type="email" id="pmtPayerEmail" placeholder="john@email.com" required />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Phone Number</label>
+                  <input type="tel" id="pmtPayerPhone" placeholder="+1 (555) 000-0000" />
+                </div>
+                <div class="form-group" id="pmtRefGroup">
+                  <label id="pmtRefLabel">Reference ID</label>
+                  <input type="text" id="pmtRef" placeholder="Property ID / Job ID" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Amount ($)</label>
+                  <input type="number" id="pmtAmount" placeholder="0.00" min="0" step="0.01" required />
+                </div>
+                <div class="form-group">
+                  <label>Payment Date</label>
+                  <input type="date" id="pmtDate" required />
+                </div>
+              </div>
+              <div class="form-row" style="grid-template-columns:1fr;">
+                <div class="form-group">
+                  <label>Payment Method</label>
+                  <div class="payment-methods">
+                    <label class="pmt-method-btn">
+                      <input type="radio" name="pmtMethod" value="Credit Card" checked />
+                      <span><i class="fas fa-credit-card"></i> Credit Card</span>
+                    </label>
+                    <label class="pmt-method-btn">
+                      <input type="radio" name="pmtMethod" value="Debit Card" />
+                      <span><i class="fas fa-credit-card"></i> Debit Card</span>
+                    </label>
+                    <label class="pmt-method-btn">
+                      <input type="radio" name="pmtMethod" value="Bank Transfer" />
+                      <span><i class="fas fa-university"></i> Bank Transfer</span>
+                    </label>
+                    <label class="pmt-method-btn">
+                      <input type="radio" name="pmtMethod" value="Cash" />
+                      <span><i class="fas fa-money-bill"></i> Cash</span>
+                    </label>
+                    <label class="pmt-method-btn">
+                      <input type="radio" name="pmtMethod" value="Mobile Money" />
+                      <span><i class="fas fa-mobile-alt"></i> Mobile</span>
+                    </label>
+                    <label class="pmt-method-btn">
+                      <input type="radio" name="pmtMethod" value="Check" />
+                      <span><i class="fas fa-money-check"></i> Check</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card details (shown for card methods) -->
+              <div id="cardDetailsSection" class="card-details-section">
+                <div class="form-row">
+                  <div class="form-group" style="grid-column:1/-1;">
+                    <label>Card Number</label>
+                    <input type="text" id="cardNumber" placeholder="1234  5678  9012  3456" maxlength="19" oninput="formatCard(this)" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Cardholder Name</label>
+                    <input type="text" id="cardName" placeholder="John Doe" />
+                  </div>
+                  <div class="form-group">
+                    <label>Expiry Date</label>
+                    <input type="text" id="cardExpiry" placeholder="MM / YY" maxlength="7" oninput="formatExpiry(this)" />
+                  </div>
+                  <div class="form-group">
+                    <label>CVV</label>
+                    <input type="text" id="cardCvv" placeholder="•••" maxlength="4" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row" style="grid-template-columns:1fr;">
+                <div class="form-group">
+                  <label>Notes (optional)</label>
+                  <input type="text" id="pmtNotes" placeholder="Additional payment notes..." />
+                </div>
+              </div>
+
+              <div class="payment-total-box">
+                <div class="ptb-row">
+                  <span>Subtotal</span>
+                  <span id="ptbSubtotal">$0.00</span>
+                </div>
+                <div class="ptb-row">
+                  <span>Processing Fee (2%)</span>
+                  <span id="ptbFee">$0.00</span>
+                </div>
+                <div class="ptb-row total">
+                  <span>Total Due</span>
+                  <span id="ptbTotal">$0.00</span>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-full" style="border-radius:8px;margin-top:8px;font-size:1rem;">
+                <i class="fas fa-lock"></i> Process Payment
+              </button>
+            </form>
+          </div>
+
+          <!-- Right side info -->
+          <div>
+            <!-- Payment Success -->
+            <div class="payment-success-box" id="paymentSuccessBox" style="display:none;">
+              <div class="psb-icon"><i class="fas fa-check-circle"></i></div>
+              <h3>Payment Successful!</h3>
+              <p id="psbMessage">Your payment has been processed.</p>
+              <div class="psb-receipt" id="psbReceipt"></div>
+              <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
+                <button class="btn btn-primary" onclick="printReceipt()" style="border-radius:6px;padding:10px 20px;">
+                  <i class="fas fa-print"></i> Print Receipt
+                </button>
+                <button class="btn btn-outline" onclick="resetPaymentForm()" style="color:var(--text);border-color:var(--border);border-radius:6px;padding:10px 20px;">
+                  <i class="fas fa-plus"></i> New Payment
+                </button>
+              </div>
+            </div>
+
+            <!-- Secure info -->
+            <div class="panel secure-panel">
+              <h4><i class="fas fa-shield-alt" style="color:var(--success);"></i> Secure Payment</h4>
+              <p>All transactions are encrypted with 256-bit SSL. Your financial data is never stored on our servers.</p>
+              <div class="secure-badges">
+                <span><i class="fas fa-lock"></i> SSL Encrypted</span>
+                <span><i class="fas fa-check-circle"></i> PCI Compliant</span>
+                <span><i class="fas fa-user-shield"></i> Fraud Protected</span>
+              </div>
+            </div>
+
+            <!-- Payment breakdown -->
+            <div class="panel">
+              <h4 style="margin-bottom:14px;color:var(--secondary);"><i class="fas fa-info-circle" style="color:var(--primary);"></i> Payment Types</h4>
+              <div class="pmt-type-list">
+                <div class="pmt-type-item">
+                  <i class="fas fa-truck" style="color:var(--primary);"></i>
+                  <div><strong>Moving Service</strong><p>For residential or commercial moves</p></div>
+                </div>
+                <div class="pmt-type-item">
+                  <i class="fas fa-home" style="color:#3b82f6;"></i>
+                  <div><strong>Rent Payment</strong><p>Monthly rent for managed properties</p></div>
+                </div>
+                <div class="pmt-type-item">
+                  <i class="fas fa-warehouse" style="color:var(--accent);"></i>
+                  <div><strong>Storage Fee</strong><p>Monthly or one-time storage charges</p></div>
+                </div>
+                <div class="pmt-type-item">
+                  <i class="fas fa-tools" style="color:var(--success);"></i>
+                  <div><strong>Maintenance Fee</strong><p>Property repair and upkeep costs</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TRANSACTIONS TAB ===== -->
+      <div class="tab-content" id="tab-transactions" style="display:none;">
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i class="fas fa-list"></i> All Transactions</h3>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <input type="text" id="txnSearch" placeholder="Search by name, type, ref..." style="padding:8px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:0.9rem;outline:none;min-width:200px;" />
+              <select id="txnFilterType" style="padding:8px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:0.9rem;outline:none;">
+                <option value="">All Types</option>
+                <option>Moving Service</option>
+                <option>Rent Payment</option>
+                <option>Security Deposit</option>
+                <option>Storage Fee</option>
+                <option>Maintenance Fee</option>
+                <option>Other</option>
+              </select>
+              <select id="txnFilterStatus" style="padding:8px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:0.9rem;outline:none;">
+                <option value="">All Statuses</option>
+                <option>Completed</option>
+                <option>Pending</option>
+                <option>Failed</option>
+                <option>Refunded</option>
+              </select>
+              <button class="btn btn-secondary" id="exportTxnBtn" style="padding:8px 18px;border-radius:6px;font-size:0.88rem;">
+                <i class="fas fa-file-export"></i> Export CSV
+              </button>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table id="txnTable">
+              <thead>
+                <tr>
+                  <th>Receipt No.</th>
+                  <th>Payer</th>
+                  <th>Type</th>
+                  <th>Reference</th>
+                  <th>Amount</th>
+                  <th>Fee</th>
+                  <th>Total</th>
+                  <th>Method</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="txnBody"></tbody>
+            </table>
+            <div id="emptyTxn" style="text-align:center;padding:48px;color:var(--text-light);">
+              <i class="fas fa-receipt" style="font-size:2.5rem;color:var(--border);display:block;margin-bottom:12px;"></i>
+              No transactions yet. Process your first payment above.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== INVOICES TAB ===== -->
+      <div class="tab-content" id="tab-invoices" style="display:none;">
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i class="fas fa-file-invoice"></i> Generate Invoice</h3>
+          </div>
+          <form id="invoiceForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Client Name</label>
+                <input type="text" id="invClient" placeholder="Client full name" required />
+              </div>
+              <div class="form-group">
+                <label>Client Email</label>
+                <input type="email" id="invEmail" placeholder="client@email.com" required />
+              </div>
+              <div class="form-group">
+                <label>Invoice Date</label>
+                <input type="date" id="invDate" required />
+              </div>
+              <div class="form-group">
+                <label>Due Date</label>
+                <input type="date" id="invDueDate" required />
+              </div>
+            </div>
+
+            <div class="invoice-items" id="invoiceItems">
+              <div class="invoice-item-header">
+                <span style="flex:3;">Description</span>
+                <span style="flex:1;">Qty</span>
+                <span style="flex:1;">Unit Price</span>
+                <span style="flex:1;">Total</span>
+                <span style="width:36px;"></span>
+              </div>
+              <div id="invoiceItemsBody">
+                <!-- Items added dynamically -->
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;margin:16px 0;">
+              <button type="button" class="btn btn-secondary" onclick="addInvoiceItem()" style="border-radius:6px;padding:9px 20px;font-size:0.88rem;">
+                <i class="fas fa-plus"></i> Add Line Item
+              </button>
+            </div>
+
+            <div class="invoice-totals">
+              <div class="inv-total-row"><span>Subtotal</span><span id="invSubtotal">$0.00</span></div>
+              <div class="inv-total-row"><span>Tax (10%)</span><span id="invTax">$0.00</span></div>
+              <div class="inv-total-row total"><span>Total Due</span><span id="invTotal">$0.00</span></div>
+            </div>
+
+            <div style="display:flex;gap:12px;margin-top:16px;">
+              <button type="submit" class="btn btn-primary" style="border-radius:6px;padding:11px 28px;">
+                <i class="fas fa-file-invoice"></i> Generate Invoice
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Invoice Preview -->
+        <div class="panel" id="invoicePreview" style="display:none;">
+          <div class="panel-header">
+            <h3><i class="fas fa-eye"></i> Invoice Preview</h3>
+            <div style="display:flex;gap:10px;">
+              <button class="btn btn-primary" onclick="window.print()" style="border-radius:6px;padding:8px 18px;font-size:0.88rem;">
+                <i class="fas fa-print"></i> Print
+              </button>
+            </div>
+          </div>
+          <div class="invoice-doc" id="invoiceDoc"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Receipt Print Modal -->
+  <div class="modal-overlay" id="receiptModal" style="display:none;">
+    <div class="modal" id="receiptContent">
+      <div class="receipt-doc" id="receiptDoc"></div>
+      <div style="display:flex;gap:12px;justify-content:center;margin-top:20px;">
+        <button class="btn btn-primary" onclick="window.print()" style="border-radius:6px;padding:10px 24px;">
+          <i class="fas fa-print"></i> Print
+        </button>
+        <button class="btn btn-outline" onclick="closeReceiptModal()" style="color:var(--text);border-color:var(--border);border-radius:6px;padding:10px 24px;">
+          <i class="fas fa-times"></i> Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo"><i class="fas fa-truck-moving"></i><span>Finnest <strong>Movers</strong></span></a>
+        <p>Professional moving and house management services you can trust.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="index.html#quote">Get a Quote</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Tools</h4>
+        <ul>
+          <li><a href="house-management.html">House Management</a></li>
+          <li><a href="payroll.html">Payroll System</a></li>
+          <li><a href="payment.html">Payment Portal</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Account</h4>
+        <ul>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="mailto:info@finnestmovers.com">Support</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Finnest Movers. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <style>
+    /* Payment methods grid */
+    .payment-methods {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .pmt-method-btn input { display: none; }
+    .pmt-method-btn span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 8px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .pmt-method-btn input:checked + span {
+      border-color: var(--primary);
+      background: rgba(232,93,4,0.07);
+      color: var(--primary);
+    }
+    .pmt-method-btn span:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* Card details */
+    .card-details-section {
+      background: var(--bg-light);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      margin-bottom: 8px;
+      border: 1px solid var(--border);
+    }
+
+    /* Payment total box */
+    .payment-total-box {
+      background: var(--bg-light);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      margin-top: 16px;
+      border: 1px solid var(--border);
+    }
+    .ptb-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+    .ptb-row.total {
+      border-top: 2px solid var(--border);
+      margin-top: 8px;
+      padding-top: 12px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--secondary);
+    }
+
+    /* Success box */
+    .payment-success-box {
+      background: white;
+      border-radius: var(--radius);
+      padding: 36px 28px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      border: 2px solid rgba(34,197,94,0.3);
+    }
+    .psb-icon { font-size: 3.5rem; color: var(--success); margin-bottom: 14px; }
+    .payment-success-box h3 { color: var(--secondary); font-size: 1.4rem; margin-bottom: 8px; }
+    .payment-success-box p { color: var(--text-light); margin-bottom: 16px; }
+    .psb-receipt {
+      background: var(--bg-light);
+      border-radius: var(--radius-sm);
+      padding: 14px 20px;
+      text-align: left;
+      font-size: 0.88rem;
+      line-height: 2;
+      border: 1px solid var(--border);
+    }
+    .psb-receipt strong { color: var(--secondary); }
+
+    /* Secure panel */
+    .secure-panel h4 { color: var(--secondary); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .secure-panel p { color: var(--text-light); font-size: 0.9rem; margin-bottom: 14px; }
+    .secure-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+    .secure-badges span {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(34,197,94,0.1); color: #16a34a;
+      padding: 5px 12px; border-radius: 50px; font-size: 0.78rem; font-weight: 600;
+    }
+
+    /* Payment type list */
+    .pmt-type-list { display: flex; flex-direction: column; gap: 14px; }
+    .pmt-type-item { display: flex; align-items: flex-start; gap: 12px; }
+    .pmt-type-item i { font-size: 1.1rem; margin-top: 3px; }
+    .pmt-type-item strong { display: block; font-size: 0.9rem; color: var(--secondary); }
+    .pmt-type-item p { font-size: 0.82rem; color: var(--text-light); margin: 0; }
+
+    /* Invoice */
+    .invoice-item-header {
+      display: flex; gap: 8px; padding: 8px 12px;
+      background: var(--bg-light); border-radius: var(--radius-sm);
+      font-size: 0.82rem; font-weight: 700; color: var(--text-light);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
+    }
+    .invoice-item-row {
+      display: flex; gap: 8px; align-items: center;
+      padding: 8px 0; border-bottom: 1px solid var(--border);
+    }
+    .invoice-item-row input {
+      padding: 8px 10px; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); font-size: 0.88rem; outline: none;
+    }
+    .invoice-item-row input:focus { border-color: var(--primary); }
+    .invoice-item-row .desc-input { flex: 3; }
+    .invoice-item-row .num-input  { flex: 1; }
+    .invoice-item-row .item-total { flex: 1; font-weight: 700; font-size: 0.9rem; color: var(--secondary); padding-left: 8px; }
+    .invoice-item-row .del-btn { width: 30px; height: 30px; background: rgba(239,68,68,0.1); border: none; border-radius: 4px; color: #ef4444; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; }
+    .invoice-totals { background: var(--bg-light); border-radius: var(--radius-sm); padding: 16px; margin-top: 16px; }
+    .inv-total-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.9rem; color: var(--text-light); }
+    .inv-total-row.total { border-top: 2px solid var(--border); margin-top: 8px; padding-top: 12px; font-weight: 700; font-size: 1.05rem; color: var(--secondary); }
+
+    /* Invoice document */
+    .invoice-doc { padding: 32px; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+
+    /* Receipt doc */
+    .receipt-doc { background: white; padding: 32px; border-radius: var(--radius); }
+
+    /* Pay grid responsive */
+    @media (max-width: 900px) {
+      .pay-grid { grid-template-columns: 1fr !important; }
+      .payment-methods { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .payment-methods { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media print {
+      body * { visibility: hidden; }
+      #receiptContent, #receiptContent *, #invoiceDoc, #invoiceDoc * { visibility: visible; }
+      #receiptContent { position: fixed; inset: 0; background: white; padding: 20px; }
+    }
+  </style>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payroll Management - Finnest Movers</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <i class="fas fa-truck-moving"></i>
+        <span>Finnest <strong>Movers</strong></span>
+      </a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="index.html#services" class="nav-link">Services</a></li>
+        <li><a href="index.html#about" class="nav-link">About</a></li>
+        <li><a href="house-management.html" class="nav-link">House Management</a></li>
+        <li><a href="payroll.html" class="nav-link active">Payroll</a></li>
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+        <li><a href="index.html#quote" class="nav-link btn-quote">Get a Quote</a></li>
+      </ul>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header">
+    <span class="section-tag">Administration</span>
+    <h1><i class="fas fa-money-bill-wave"></i> Payroll Management</h1>
+    <p>Manage employee salaries, deductions, bonuses, and generate pay slips with ease.</p>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <section class="management-section">
+    <div class="container">
+
+      <!-- Summary Cards -->
+      <div class="summary-cards">
+        <div class="summary-card green">
+          <div class="summary-icon"><i class="fas fa-users"></i></div>
+          <div class="summary-info">
+            <h4 id="totalEmployees">0</h4>
+            <p>Total Employees</p>
+          </div>
+        </div>
+        <div class="summary-card blue">
+          <div class="summary-icon"><i class="fas fa-dollar-sign"></i></div>
+          <div class="summary-info">
+            <h4 id="totalPayroll">$0</h4>
+            <p>Monthly Payroll</p>
+          </div>
+        </div>
+        <div class="summary-card orange">
+          <div class="summary-icon"><i class="fas fa-gift"></i></div>
+          <div class="summary-info">
+            <h4 id="totalBonuses">$0</h4>
+            <p>Total Bonuses</p>
+          </div>
+        </div>
+        <div class="summary-card red">
+          <div class="summary-icon"><i class="fas fa-minus-circle"></i></div>
+          <div class="summary-info">
+            <h4 id="totalDeductions">$0</h4>
+            <p>Total Deductions</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add / Edit Employee Form -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3><i class="fas fa-user-plus"></i> <span id="formTitle">Add New Employee</span></h3>
+          <button class="btn btn-outline" id="clearFormBtn" style="color:var(--text);border-color:var(--border);padding:8px 18px;border-radius:6px;font-size:0.88rem;">
+            <i class="fas fa-times"></i> Clear Form
+          </button>
+        </div>
+        <form id="employeeForm">
+          <input type="hidden" id="editIndex" value="-1" />
+          <div class="form-row">
+            <div class="form-group">
+              <label>Employee ID</label>
+              <input type="text" id="empId" placeholder="e.g. FM-001" required />
+            </div>
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="empName" placeholder="John Doe" required />
+            </div>
+            <div class="form-group">
+              <label>Position / Role</label>
+              <input type="text" id="empRole" placeholder="e.g. Truck Driver" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Department</label>
+              <select id="empDept" required>
+                <option value="">Select Department</option>
+                <option>Moving Operations</option>
+                <option>Packing & Storage</option>
+                <option>House Management</option>
+                <option>Administration</option>
+                <option>Customer Service</option>
+                <option>Logistics</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Employment Type</label>
+              <select id="empType">
+                <option>Full-Time</option>
+                <option>Part-Time</option>
+                <option>Contract</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Pay Period</label>
+              <select id="empPeriod">
+                <option>Monthly</option>
+                <option>Bi-Weekly</option>
+                <option>Weekly</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Basic Salary ($)</label>
+              <input type="number" id="empSalary" placeholder="0.00" min="0" step="0.01" required />
+            </div>
+            <div class="form-group">
+              <label>Bonus ($)</label>
+              <input type="number" id="empBonus" placeholder="0.00" min="0" step="0.01" value="0" />
+            </div>
+            <div class="form-group">
+              <label>Deductions ($)</label>
+              <input type="number" id="empDeductions" placeholder="0.00" min="0" step="0.01" value="0" />
+            </div>
+            <div class="form-group">
+              <label>Tax Rate (%)</label>
+              <input type="number" id="empTax" placeholder="e.g. 15" min="0" max="100" step="0.1" value="15" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Start Date</label>
+              <input type="date" id="empStartDate" required />
+            </div>
+            <div class="form-group">
+              <label>Bank Account (last 4 digits)</label>
+              <input type="text" id="empBank" placeholder="e.g. 4532" maxlength="4" />
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select id="empStatus">
+                <option>Active</option>
+                <option>On Leave</option>
+                <option>Terminated</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:8px;">
+            <button type="submit" class="btn btn-primary" style="border-radius:6px;padding:11px 28px;">
+              <i class="fas fa-save"></i> <span id="submitBtnText">Add Employee</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Search & Filter -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3><i class="fas fa-list"></i> Employee Payroll Records</h3>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <input type="text" id="searchInput" placeholder="Search by name or ID..." style="padding:8px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:0.9rem;outline:none;min-width:220px;" />
+            <select id="filterDept" style="padding:8px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:0.9rem;outline:none;">
+              <option value="">All Departments</option>
+              <option>Moving Operations</option>
+              <option>Packing & Storage</option>
+              <option>House Management</option>
+              <option>Administration</option>
+              <option>Customer Service</option>
+              <option>Logistics</option>
+            </select>
+            <button class="btn btn-secondary" id="exportBtn" style="padding:8px 18px;border-radius:6px;font-size:0.88rem;">
+              <i class="fas fa-file-export"></i> Export CSV
+            </button>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table id="payrollTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Department</th>
+                <th>Basic Salary</th>
+                <th>Bonus</th>
+                <th>Deductions</th>
+                <th>Tax</th>
+                <th>Net Pay</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="payrollBody">
+              <!-- Rows injected by JS -->
+            </tbody>
+          </table>
+          <div id="emptyPayroll" style="text-align:center;padding:48px;color:var(--text-light);display:none;">
+            <i class="fas fa-users" style="font-size:2.5rem;color:var(--border);display:block;margin-bottom:12px;"></i>
+            No employee records found. Add your first employee above.
+          </div>
+        </div>
+      </div>
+
+      <!-- Pay Slip Modal Trigger info -->
+      <div class="panel" style="background:linear-gradient(135deg,#1a1a2e,#0f3460);color:white;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+          <div>
+            <h3 style="color:white;font-size:1.1rem;margin-bottom:6px;"><i class="fas fa-file-invoice-dollar" style="color:var(--accent);"></i> Pay Slip Generator</h3>
+            <p style="color:rgba(255,255,255,0.65);font-size:0.9rem;">Click the <strong style="color:var(--accent);">Pay Slip</strong> button next to any employee to generate and print their detailed pay slip.</p>
+          </div>
+          <div style="text-align:right;">
+            <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;">Current Period</p>
+            <p style="color:white;font-weight:700;" id="currentPeriod"></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== PAY SLIP MODAL ===== -->
+  <div class="modal-overlay" id="paySlipModal" style="display:none;">
+    <div class="modal" id="paySlipContent">
+      <div class="payslip">
+        <div class="payslip-header">
+          <div>
+            <div class="payslip-logo"><i class="fas fa-truck-moving"></i> Finnest Movers</div>
+            <p style="color:rgba(255,255,255,0.7);font-size:0.85rem;">1234 Mover's Lane, Atlanta, GA 30301</p>
+          </div>
+          <div style="text-align:right;">
+            <h2 style="color:white;font-size:1.3rem;">PAY SLIP</h2>
+            <p id="slipPeriod" style="color:rgba(255,255,255,0.7);font-size:0.85rem;"></p>
+          </div>
+        </div>
+        <div class="payslip-body">
+          <div class="slip-section">
+            <h4>Employee Details</h4>
+            <div class="slip-grid">
+              <div><span>Employee ID</span><strong id="slipId"></strong></div>
+              <div><span>Full Name</span><strong id="slipName"></strong></div>
+              <div><span>Position</span><strong id="slipRole"></strong></div>
+              <div><span>Department</span><strong id="slipDept"></strong></div>
+              <div><span>Employment Type</span><strong id="slipType"></strong></div>
+              <div><span>Pay Period</span><strong id="slipPayPeriod"></strong></div>
+            </div>
+          </div>
+          <div class="slip-section">
+            <h4>Earnings & Deductions</h4>
+            <div class="slip-table">
+              <div class="slip-row">
+                <span>Basic Salary</span>
+                <span class="positive" id="slipSalary"></span>
+              </div>
+              <div class="slip-row">
+                <span>Bonus</span>
+                <span class="positive" id="slipBonus"></span>
+              </div>
+              <div class="slip-row">
+                <span>Other Deductions</span>
+                <span class="negative" id="slipDeductions"></span>
+              </div>
+              <div class="slip-row">
+                <span>Tax (<span id="slipTaxRate"></span>%)</span>
+                <span class="negative" id="slipTaxAmt"></span>
+              </div>
+              <div class="slip-row total">
+                <span>NET PAY</span>
+                <span id="slipNetPay"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="payslip-footer">
+          <p>This is a computer-generated pay slip and does not require a signature.</p>
+          <p>For queries, contact hr@finnestmovers.com</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;margin-top:20px;">
+        <button class="btn btn-primary" onclick="window.print()" style="border-radius:6px;padding:10px 24px;">
+          <i class="fas fa-print"></i> Print Pay Slip
+        </button>
+        <button class="btn btn-outline" onclick="closePaySlip()" style="color:var(--text);border-color:var(--border);border-radius:6px;padding:10px 24px;">
+          <i class="fas fa-times"></i> Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo"><i class="fas fa-truck-moving"></i><span>Finnest <strong>Movers</strong></span></a>
+        <p>Professional moving and house management services you can trust.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="index.html#quote">Get a Quote</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Tools</h4>
+        <ul>
+          <li><a href="house-management.html">House Management</a></li>
+          <li><a href="payroll.html">Payroll System</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="mailto:hr@finnestmovers.com">HR Support</a></li>
+          <li><a href="mailto:info@finnestmovers.com">General Info</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Finnest Movers. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Pay Slip extra styles -->
+  <style>
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .modal {
+      background: var(--bg-light);
+      border-radius: var(--radius);
+      padding: 32px;
+      max-width: 680px;
+      width: 100%;
+      animation: fadeInUp 0.3s ease;
+    }
+    .payslip {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .payslip-header {
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      padding: 28px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .payslip-logo {
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .payslip-logo i { color: var(--primary); }
+    .payslip-body { padding: 28px 32px; }
+    .slip-section { margin-bottom: 24px; }
+    .slip-section h4 {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-light);
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .slip-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .slip-grid div { display: flex; flex-direction: column; gap: 2px; }
+    .slip-grid span { font-size: 0.78rem; color: var(--text-light); }
+    .slip-grid strong { font-size: 0.93rem; color: var(--secondary); }
+    .slip-table { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+    .slip-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 11px 16px;
+      font-size: 0.92rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .slip-row:last-child { border-bottom: none; }
+    .slip-row.total {
+      background: var(--secondary);
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .positive { color: var(--success); font-weight: 600; }
+    .negative { color: #ef4444; font-weight: 600; }
+    .payslip-footer {
+      background: var(--bg-light);
+      padding: 16px 32px;
+      text-align: center;
+      color: var(--text-light);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+    }
+    @media print {
+      body * { visibility: hidden; }
+      #paySlipContent, #paySlipContent * { visibility: visible; }
+      #paySlipContent { position: fixed; inset: 0; background: white; padding: 20px; }
+      .modal-overlay { background: white; }
+    }
+  </style>
+
+  <script src="app.js"></script>
+</body>
+</html>

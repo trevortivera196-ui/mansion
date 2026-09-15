@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>House Management - Finnest Movers</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <i class="fas fa-truck-moving"></i>
+        <span>Finnest <strong>Movers</strong></span>
+      </a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="index.html#services" class="nav-link">Services</a></li>
+        <li><a href="index.html#about" class="nav-link">About</a></li>
+        <li><a href="house-management.html" class="nav-link active">House Management</a></li>
+        <li><a href="payroll.html" class="nav-link">Payroll</a></li>
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+        <li><a href="index.html#quote" class="nav-link btn-quote">Get a Quote</a></li>
+      </ul>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header">
+    <span class="section-tag">Property Management</span>
+    <h1><i class="fas fa-house-chimney-user"></i> House Management</h1>
+    <p>Track properties, tenants, rent payments, and maintenance requests all in one place.</p>
+  </div>
+
+  <!-- ===== TABS ===== -->
+  <div class="hm-tabs-bar">
+    <div class="container">
+      <div class="hm-tabs">
+        <button class="hm-tab active" data-tab="properties">
+          <i class="fas fa-building"></i> Properties
+        </button>
+        <button class="hm-tab" data-tab="tenants">
+          <i class="fas fa-users"></i> Tenants
+        </button>
+        <button class="hm-tab" data-tab="payments">
+          <i class="fas fa-credit-card"></i> Rent Payments
+        </button>
+        <button class="hm-tab" data-tab="maintenance">
+          <i class="fas fa-tools"></i> Maintenance
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <section class="management-section" style="padding-top:40px;">
+    <div class="container">
+
+      <!-- ========== PROPERTIES TAB ========== -->
+      <div class="tab-content active" id="tab-properties">
+
+        <!-- Summary -->
+        <div class="summary-cards">
+          <div class="summary-card green">
+            <div class="summary-icon"><i class="fas fa-home"></i></div>
+            <div class="summary-info">
+              <h4 id="propTotal">0</h4>
+              <p>Total Properties</p>
+            </div>
+          </div>
+          <div class="summary-card blue">
+            <div class="summary-icon"><i class="fas fa-check-circle"></i></div>
+            <div class="summary-info">
+              <h4 id="propOccupied">0</h4>
+              <p>Occupied</p>
+            </div>
+          </div>
+          <div class="summary-card orange">
+            <div class="summary-icon"><i class="fas fa-door-open"></i></div>
+            <div class="summary-info">
+              <h4 id="propVacant">0</h4>
+              <p>Vacant</p>
+            </div>
+          </div>
+          <div class="summary-card red">
+            <div class="summary-icon"><i class="fas fa-dollar-sign"></i></div>
+            <div class="summary-info">
+              <h4 id="propRevenue">$0</h4>
+              <p>Monthly Revenue</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Property Form -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i class="fas fa-plus-circle"></i> <span id="propFormTitle">Add New Property</span></h3>
+            <button class="btn btn-outline" id="clearPropFormBtn" style="color:var(--text);border-color:var(--border);padding:8px 18px;border-radius:6px;font-size:0.88rem;">
+              <i class="fas fa-times"></i> Clear
+            </button>
+          </div>
+          <form id="propertyForm">
+            <input type="hidden" id="propEditIndex" value="-1" />
+            <div class="form-row">
+              <div class="form-group">
+                <label>Property ID</label>
+                <input type="text" id="propId" placeholder="e.g. PROP-001" required />
+              </div>
+              <div class="form-group">
+                <label>Property Name</label>
+                <input type="text" id="propName" placeholder="e.g. Sunset Apartments Unit 3" required />
+              </div>
+              <div class="form-group">
+                <label>Property Type</label>
+                <select id="propType" required>
+                  <option value="">Select Type</option>
+                  <option>Apartment</option>
+                  <option>House</option>
+                  <option>Condo</option>
+                  <option>Townhouse</option>
+                  <option>Commercial</option>
+                  <option>Storage Unit</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Address</label>
+                <input type="text" id="propAddress" placeholder="123 Main St, Atlanta, GA" required />
+              </div>
+              <div class="form-group">
+                <label>Bedrooms</label>
+                <input type="number" id="propBeds" placeholder="e.g. 3" min="0" />
+              </div>
+              <div class="form-group">
+                <label>Bathrooms</label>
+                <input type="number" id="propBaths" placeholder="e.g. 2" min="0" step="0.5" />
+              </div>
+              <div class="form-group">
+                <label>Size (sq ft)</label>
+                <input type="number" id="propSize" placeholder="e.g. 1200" min="0" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Monthly Rent ($)</label>
+                <input type="number" id="propRent" placeholder="0.00" min="0" step="0.01" required />
+              </div>
+              <div class="form-group">
+                <label>Security Deposit ($)</label>
+                <input type="number" id="propDeposit" placeholder="0.00" min="0" step="0.01" />
+              </div>
+              <div class="form-group">
+                <label>Status</label>
+                <select id="propStatus" required>
+                  <option>Vacant</option>
+                  <option>Occupied</option>
+                  <option>Under Maintenance</option>
+                  <option>For Sale</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Owner / Manager</label>
+                <input type="text" id="propOwner" placeholder="Owner name" />
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;margin-top:8px;">
+              <button type="submit" class="btn btn-primary" style="border-radius:6px;padding:11px 28px;">
+                <i class="fas fa-save"></i> <span id="propSubmitText">Add Property</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Properties Table -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i class="fas fa-list"></i> Property Records</h3>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <input type="text" id="propSearchInput" placeholder="Search by name or address..." style="padding:8px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:0.9rem;outline:none;min-width:220px;" />
+              <select id="propFilterStatus" style="padding:8px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:0.9rem;outline:none;">
+                <option value="">All Statuses</option>
+                <option>Vacant</option>
+                <option>Occupied</option>
+                <option>Under Maintenance</option>
+                <option>For Sale</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table id="propertiesTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Property Name</th>
+                  <th>Type</th>
+                  <th>Address</th>
+                  <th>Beds/Baths</th>
+                  <th>Size</th>
+                  <th>Monthly Rent</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="propertiesBody"></tbody>
+            </table>
+            <div id="emptyProperties" style="text-align:center;padding:48px;color:var(--text-light);display:none;">
+              <i class="fas fa-home" style="font-size:2.5rem;color:var(--border);display:block;margin-bottom:12px;"></i>
+              No properties found. Add your first property above.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== TENANTS TAB ========== -->
+      <div class="tab-content" id="tab-tenants" style="display:none;">
+
+        <div class="summary-cards">
+          <div class="summary-card green">
+            <div class="summary-icon"><i class="fas fa-user-check"></i></div>
+            <div class="summary-info"><h4 id="tenantTotal">0</h4><p>Total Tenants</p></div>
+          </div>
+          <div class="summary-card blue">
+            <div class="summary-icon"><i class="fas fa-user-clock"></i></div>
+            <div class="summary-info"><h4 id="tenantActive">0</h4><p>Active Leases</p></div>
+          </div>
+          <div class="summary-card orange">
+            <div class="summary-icon"><i class="fas fa-user-times"></i></div>
+            <div class="summary-info"><h4 id="tenantExpiring">0</h4><p>Expiring Soon</p></div>
+          </div>
+          <div class="summary-card red">
+            <div class="summary-icon"><i class="fas fa-exclamation-circle"></i></div>
+            <div class="summary-info"><h4 id="tenantOverdue">0</h4><p>Overdue Rent</p></div>
+          </div>
+        </div>
+
+        <!-- Add Tenant Form -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i class="fas fa-user-plus"></i> <span id="tenantFormTitle">Add New Tenant</span></h3>
+            <button class="btn btn-outline" id="clearTenantFormBtn" style="color:var(--text);border-color:var(--border);padding:8px 18px;border-radius:6px;font-size:0.88rem;">
+              <i class="fas fa-times"></i> Clear
+            </button>
+          </div>
+          <form id="tenantForm">
+            <input type="hidden" id="tenantEditIndex" value="-1" />
+            <div class="form-row">
+              <div class="form-group">
+                <label>Tenant ID</label>
+                <input type="text" id="tenantId" placeholder="e.g. TEN-001" required />
+              </div>
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="tenantName" placeholder="Jane Smith" required />
+              </div>
+              <div class="form-group">
+                <label>Phone</label>
+                <input type="tel" id="tenantPhone" placeholder="+1 (555) 000-0000" required />
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="tenantEmail" placeholder="jane@email.com" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Assigned Property ID</label>
+                <input type="text" id="tenantPropId" placeholder="e.g. PROP-001" required />
+              </div>
+              <div class="form-group">
+                <label>Lease Start Date</label>
+                <input type="date" id="tenantLeaseStart" required />
+              </div>
+              <div class="form-group">
+                <label>Lease End Date</label>
+                <input type="date" id="tenantLeaseEnd" required />
+              </div>
+              <div class="form-group">
+                <label>Monthly Rent ($)</label>
+                <input type="number" id="tenantRent" placeholder="0.00" min="0" step="0.01" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Number of Occupants</label>
+                <input type="number" id="tenantOccupants" placeholder="e.g. 2" min="1" />
+              </div>
+              <div class="form-group">
+                <label>ID / Passport Number</label>
+                <input type="text" id="tenantIdNum" placeholder="ID or passport number" />
+              </div>
+              <div class="form-group">
+                <label>Lease Status</label>
+                <select id="tenantStatus">
+                  <option>Active</option>
+                  <option>Expiring Soon</option>
+                  <option>Overdue</option>
+                  <option>Terminated</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;margin-top:8px;">
+              <button type="submit" class="btn btn-primary" style="border-radius:6px;padding:11px 28px;">
+                <i class="fas fa-save"></i> <span id="tenantSubmitText">Add Tenant</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Tenants Table -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i class="fas fa-list"></i> Tenant Records</h3>
+            <input type="text" id="tenantSearchInput" placeholder="Search by name or property ID..." style="padding:8px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:0.9rem;outline:none;min-width:220px;" />
+          </div>
+          <div class="table-wrapper">
+            <table id="tenantsTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Property ID</th>
+                  <th>Lease Start</th>
+                  <th>Lease End</th>
+                  <th>Monthly Rent</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tenantsBody"></tbody>
+            </table>
+            <div id="emptyTenants" style="text-align:center;padding:48px;color:var(--text-light);display:none;">
+              <i class="fas fa-users" style="font-size:2.5rem;color:var(--border);display:block;margin-bottom:12px;"></i>
+              No tenants found. Add your first tenant above.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== PAYMENTS TAB ========== -->
+      <div class="tab-content" id="tab-payments" style="display:none;">
+
+        <div class="summary-cards">
+          <div class="summary-card green">
+            <div class="summary-icon"><i class="fas fa-check-circle"></i></div>
+            <div class="summary-info"><h4 id="payPaid">$0</h4><p>Paid This Month</p></div>
+          </div>
+          <div class="summary-card red">
+            <div class="summary-icon"><i class="fas fa-hourglass-half"></i></div>
+            <div class="summary-info"><h4 id="payPending">$0</h4><p>Pending</p></div>
+          </div>
+          <div class="summary-card blue">
+            <div class="summary-icon"><i class="fas fa-receipt"></i></div>
+            <div class="summary-info"><h4 id="payCount">0</h4><p>Transactions</p></div>
+          </div>
+          <div class="summary-card orange">
+            <div class="summary-icon"><i class="fas fa-ban"></i></div>
+            <div class="summary-info"><h4 id="payOverdue">$0</h4><p>Overdue</p></div>
+          </div>
+        </div>
+
+        <!-- Log Payment Form -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i class="fas fa-plus-circle"></i> Log Rent Payment</h3>
+          </div>
+          <form id="paymentForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Tenant ID</label>
+                <input type="text" id="payTenantId" placeholder="e.g. TEN-001" required />
+              </div>
+              <div class="form-group">
+                <label>Tenant Name</label>
+                <input type="text" id="payTenantName" placeholder="Jane Smith" required />
+              </div>
+              <div class="form-group">
+                <label>Property ID</label>
+                <input type="text" id="payPropId" placeholder="e.g. PROP-001" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Amount Paid ($)</label>
+                <input type="number" id="payAmount" placeholder="0.00" min="0" step="0.01" required />
+              </div>
+              <div class="form-group">
+                <label>Payment Date</label>
+                <input type="date" id="payDate" required />
+              </div>
+              <div class="form-group">
+                <label>Payment Method</label>
+                <select id="payMethod">
+                  <option>Bank Transfer</option>
+                  <option>Cash</option>
+                  <option>Check</option>
+                  <option>Online Portal</option>
+                  <option>Mobile Money</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Status</label>
+                <select id="payStatus">
+                  <option>Paid</option>
+                  <option>Pending</option>
+                  <option>Overdue</option>
+                  <option>Partial</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Period (Month/Year)</label>
+                <input type="text" id="payPeriod" placeholder="e.g. September 2026" required />
+              </div>
+              <div class="form-group">
+                <label>Receipt / Reference No.</label>
+                <input type="text" id="payRef" placeholder="Auto-generated if blank" />
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;margin-top:8px;">
+              <button type="submit" class="btn btn-primary" style="border-radius:6px;padding:11px 28px;">
+                <i class="fas fa-save"></i> Log Payment
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Payments Table -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i class="fas fa-list"></i> Payment History</h3>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <input type="text" id="paySearchInput" placeholder="Search by tenant or property..." style="padding:8px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:0.9rem;outline:none;min-width:200px;" />
+              <select id="payFilterStatus" style="padding:8px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:0.9rem;outline:none;">
+                <option value="">All Statuses</option>
+                <option>Paid</option>
+                <option>Pending</option>
+                <option>Overdue</option>
+                <option>Partial</option>
+              </select>
+              <button class="btn btn-secondary" id="exportPaymentsBtn" style="padding:8px 18px;border-radius:6px;font-size:0.88rem;">
+                <i class="fas fa-file-export"></i> Export CSV
+              </button>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table id="paymentsTable">
+              <thead>
+                <tr>
+                  <th>Receipt No.</th>
+                  <th>Tenant</th>
+                  <th>Property</th>
+                  <th>Amount</th>
+                  <th>Period</th>
+                  <th>Date Paid</th>
+                  <th>Method</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="paymentsBody"></tbody>
+            </table>
+            <div id="emptyPayments" style="text-align:center;padding:48px;color:var(--text-light);display:none;">
+              <i class="fas fa-receipt" style="font-size:2.5rem;color:var(--border);display:block;margin-bottom:12px;"></i>
+              No payment records found. Log your first payment above.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== MAINTENANCE TAB ========== -->
+      <div class="tab-content" id="tab-maintenance" style="display:none;">
+
+        <div class="summary-cards">
+          <div class="summary-card orange">
+            <div class="summary-icon"><i class="fas fa-tools"></i></div>
+            <div class="summary-info"><h4 id="maintOpen">0</h4><p>Open Requests</p></div>
+          </div>
+          <div class="summary-card blue">
+            <div class="summary-icon"><i class="fas fa-spinner"></i></div>
+            <div class="summary-info"><h4 id="maintProgress">0</h4><p>In Progress</p></div>
+          </div>
+          <div class="summary-card green">
+            <div class="summary-icon"><i class="fas fa-check-double"></i></div>
+            <div class="summary-info"><h4 id="maintDone">0</h4><p>Completed</p></div>
+          </div>
+          <div class="summary-card red">
+            <div class="summary-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <div class="summary-info"><h4 id="maintUrgent">0</h4><p>Urgent</p></div>
+          </div>
+        </div>
+
+        <!-- Log Request Form -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i class="fas fa-plus-circle"></i> Log Maintenance Request</h3>
+            <button class="btn btn-outline" id="clearMaintFormBtn" style="color:var(--text);border-color:var(--border);padding:8px 18px;border-radius:6px;font-size:0.88rem;">
+              <i class="fas fa-times"></i> Clear
+            </button>
+          </div>
+          <form id="maintenanceForm">
+            <input type="hidden" id="maintEditIndex" value="-1" />
+            <div class="form-row">
+              <div class="form-group">
+                <label>Request ID</label>
+                <input type="text" id="maintId" placeholder="e.g. MNT-001" required />
+              </div>
+              <div class="form-group">
+                <label>Property ID</label>
+                <input type="text" id="maintPropId" placeholder="e.g. PROP-001" required />
+              </div>
+              <div class="form-group">
+                <label>Reported By</label>
+                <input type="text" id="maintReporter" placeholder="Tenant or manager name" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Issue Category</label>
+                <select id="maintCategory" required>
+                  <option value="">Select Category</option>
+                  <option>Plumbing</option>
+                  <option>Electrical</option>
+                  <option>HVAC</option>
+                  <option>Appliance</option>
+                  <option>Structural</option>
+                  <option>Pest Control</option>
+                  <option>Painting</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Priority</label>
+                <select id="maintPriority">
+                  <option>Low</option>
+                  <option>Medium</option>
+                  <option>High</option>
+                  <option>Urgent</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Status</label>
+                <select id="maintStatus">
+                  <option>Open</option>
+                  <option>In Progress</option>
+                  <option>Completed</option>
+                  <option>On Hold</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Date Reported</label>
+                <input type="date" id="maintDate" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group" style="grid-column:1/-1;">
+                <label>Description</label>
+                <input type="text" id="maintDesc" placeholder="Describe the issue in detail..." required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Assigned Technician</label>
+                <input type="text" id="maintTech" placeholder="Technician name or team" />
+              </div>
+              <div class="form-group">
+                <label>Estimated Cost ($)</label>
+                <input type="number" id="maintCost" placeholder="0.00" min="0" step="0.01" />
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;margin-top:8px;">
+              <button type="submit" class="btn btn-primary" style="border-radius:6px;padding:11px 28px;">
+                <i class="fas fa-save"></i> <span id="maintSubmitText">Log Request</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Maintenance Table -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i class="fas fa-list"></i> Maintenance Requests</h3>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <input type="text" id="maintSearchInput" placeholder="Search by ID or property..." style="padding:8px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:0.9rem;outline:none;min-width:200px;" />
+              <select id="maintFilterStatus" style="padding:8px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:0.9rem;outline:none;">
+                <option value="">All Statuses</option>
+                <option>Open</option>
+                <option>In Progress</option>
+                <option>Completed</option>
+                <option>On Hold</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table id="maintenanceTable">
+              <thead>
+                <tr>
+                  <th>Request ID</th>
+                  <th>Property</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Priority</th>
+                  <th>Date</th>
+                  <th>Technician</th>
+                  <th>Est. Cost</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="maintenanceBody"></tbody>
+            </table>
+            <div id="emptyMaintenance" style="text-align:center;padding:48px;color:var(--text-light);display:none;">
+              <i class="fas fa-tools" style="font-size:2.5rem;color:var(--border);display:block;margin-bottom:12px;"></i>
+              No maintenance requests found. Log your first request above.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo"><i class="fas fa-truck-moving"></i><span>Finnest <strong>Movers</strong></span></a>
+        <p>Professional moving and house management services you can trust.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="index.html#quote">Get a Quote</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Tools</h4>
+        <ul>
+          <li><a href="house-management.html">House Management</a></li>
+          <li><a href="payroll.html">Payroll System</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="mailto:info@finnestmovers.com">General Info</a></li>
+          <li><a href="mailto:hr@finnestmovers.com">HR Support</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Finnest Movers. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Tab & HM styles -->
+  <style>
+    .hm-tabs-bar {
+      background: var(--white);
+      border-bottom: 2px solid var(--border);
+      position: sticky;
+      top: 70px;
+      z-index: 900;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .hm-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 0;
+      overflow-x: auto;
+    }
+    .hm-tab {
+      padding: 16px 24px;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      font-size: 0.93rem;
+      font-weight: 600;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: -2px;
+    }
+    .hm-tab:hover { color: var(--primary); background: rgba(232,93,4,0.05); }
+    .hm-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .hm-tab i { font-size: 0.9rem; }
+
+    .badge-priority-low    { background: rgba(34,197,94,0.12);  color: #16a34a; }
+    .badge-priority-medium { background: rgba(245,158,11,0.12); color: #d97706; }
+    .badge-priority-high   { background: rgba(239,68,68,0.12);  color: #dc2626; }
+    .badge-priority-urgent { background: #ef4444; color: white; }
+
+    @media (max-width: 600px) {
+      .hm-tab { padding: 14px 16px; font-size: 0.85rem; }
+    }
+  </style>
+
+  <script src="app.js"></script>
+</body>
+</html>
